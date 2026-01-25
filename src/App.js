@@ -98,7 +98,7 @@ return (
           {isLoading ? (
             <div className="loading-state">
               <img src={loaderImg} className="custom-loader" alt="Loading..." />
-              <p>Waking up the server... This might take up to a minute!</p>
+              <p>One moment please...</p>
             </div>
           ) : (
             <button className="decide-button" onClick={pickTask}>
