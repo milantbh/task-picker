@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
+import loaderImg from './assets/dog.gif';
 
 function App() {
   const [taskName, setTaskName] = useState("");
@@ -35,7 +36,7 @@ const pickTask = async () => {
   } catch (error) {
     alert("The server is waking up... please try again in 10 seconds!");
   } finally {
-    setIsLoading(false); // Stop loading regardless of success/fail
+    setIsLoading(false);
   }
 };
 
@@ -78,9 +79,8 @@ return (
       <div key={i} className="task-row">
         <div className="task-info">
           <span className="task-name">{t.name}</span>
-          <span className="task-chance">{chance}%</span>
+          <span className="task-chance">Chance: {chance}%</span>
         </div>
-        {/* The Delete Button */}
         <button 
           className="delete-btn" 
           onClick={() => deleteTask(i)}
@@ -97,8 +97,8 @@ return (
         <div className="action-area">
           {isLoading ? (
             <div className="loading-state">
-              <div className="spinner"></div>
-              <p>Waking up the server...</p>
+              <img src={loaderImg} className="custom-loader" alt="Loading..." />
+              <p>Waking up the server... This might take up to a minute!</p>
             </div>
           ) : (
             <button className="decide-button" onClick={pickTask}>
@@ -112,6 +112,7 @@ return (
         <div className="result-card">
           <small>The universe suggests:</small>
           <h2>{result}</h2>
+          <h1>You are filled with determination.</h1>
         </div>
       )}
     </div>
