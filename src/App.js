@@ -18,7 +18,7 @@ function App() {
 
   const pickTask = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/pick-task', {
+      const response = await axios.post('https://task-picker-api.onrender.com/pick-task', {
         tasks: taskList
       });
       setResult(response.data.choice);
