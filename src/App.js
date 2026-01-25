@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
   const [taskName, setTaskName] = useState("");
@@ -16,63 +17,106 @@ function App() {
     }
   };
 
-  const pickTask = async () => {
-    try {
-      const response = await axios.post('https://task-picker-api.onrender.com/pick-task', {
-        tasks: taskList
-      });
-      setResult(response.data.choice);
-    } catch (error) {
-      console.error("Error picking task", error);
-    }
-  };
+  const deleteTask = (indexToDelete) => {
+  const updatedList = taskList.filter((_, index) => index !== indexToDelete);
+  setTaskList(updatedList);
+};
 
-  return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif' }}>
-      <h1>Weighted Task Decider</h1>
-      
-      <div style={{ marginBottom: '20px' }}>
-  <input 
-    value={taskName} 
-    onChange={(e) => setTaskName(e.target.value)} 
-    placeholder="Task name..." 
-  />
+ const [isLoading, setIsLoading] = useState(false); // Add this state
 
-  {/* The Slider */}
-  <label style={{ marginLeft: '15px' }}>
-    Priority: {weight}
-    <input 
-      type="range" 
-      min="1" 
-      max="10" 
-      value={weight} 
-      onChange={(e) => setWeight(e.target.value)} 
-      style={{ verticalAlign: 'middle', marginLeft: '10px' }}
-    />
-  </label>
+const pickTask = async () => {
+  setIsLoading(true); // Start loading
+  setResult(null);    // Clear old result
+  try {
+    const response = await axios.post('https://task-picker-api.onrender.com/pick-task', {
+      tasks: taskList
+    });
+    setResult(response.data.choice);
+  } catch (error) {
+    alert("The server is waking up... please try again in 10 seconds!");
+  } finally {
+    setIsLoading(false); // Stop loading regardless of success/fail
+  }
+};
 
-  <button onClick={addTask} style={{ marginLeft: '15px' }}>Add Task</button>
+return (
+  <div className="app-wrapper">
+    <div className="main-card">
+      <header>
+        <h1>Decision Maker</h1>
+        <p>Assign weight to your choices</p>
+      </header>
+
+      <div className="input-section">
+        <input 
+          type="text"
+          value={taskName} 
+          onChange={(e) => setTaskName(e.target.value)} 
+          placeholder="What's the task?" 
+        />
+        
+        <div className="weight-control">
+          <label>Priority: <span>{weight}</span></label>
+          <input 
+            type="range" 
+            min="1" 
+            max="10" 
+            value={weight} 
+            onChange={(e) => setWeight(e.target.value)} 
+          />
+        </div>
+
+        <button className="add-button" onClick={addTask}>Add to List</button>
+      </div>
+
+      <div className="list-container">
+  {taskList.map((t, i) => {
+    const totalWeight = taskList.reduce((sum, item) => sum + Number(item.weight), 0);
+    const chance = ((t.weight / totalWeight) * 100).toFixed(0);
+    
+    return (
+      <div key={i} className="task-row">
+        <div className="task-info">
+          <span className="task-name">{t.name}</span>
+          <span className="task-chance">{chance}%</span>
+        </div>
+        {/* The Delete Button */}
+        <button 
+          className="delete-btn" 
+          onClick={() => deleteTask(i)}
+          title="Remove task"
+        >
+          ×
+        </button>
+      </div>
+    );
+  })}
 </div>
 
-      <ul>
-        {taskList.map((t, i) => (
-          <li key={i}>{t.name} (Weight: {t.weight})</li>
-        ))}
-      </ul>
-
       {taskList.length > 0 && (
-        <button onClick={pickTask} style={{ padding: '10px 20px', fontSize: '1.2rem', cursor: 'pointer' }}>
-          Roll the Dice!
-        </button>
+        <div className="action-area">
+          {isLoading ? (
+            <div className="loading-state">
+              <div className="spinner"></div>
+              <p>Waking up the server...</p>
+            </div>
+          ) : (
+            <button className="decide-button" onClick={pickTask}>
+              Pick My Task
+            </button>
+          )}
+        </div>
       )}
 
       {result && (
-        <div style={{ marginTop: '30px', color: 'blue' }}>
-          <h2>The winner is: {result}</h2>
+        <div className="result-card">
+          <small>The universe suggests:</small>
+          <h2>{result}</h2>
         </div>
       )}
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
