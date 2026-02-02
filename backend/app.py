@@ -24,5 +24,9 @@ def pick_task():
     
     return jsonify({"choice": selection})
 
+@app.route('/')
+def health_check():
+    return {"status": "online", "message": "I am awake!"}, 200
+
 if __name__ == '__main__':
     app.run(debug=True)
