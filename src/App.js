@@ -45,7 +45,6 @@ return (
     <div className="main-card">
       <header>
         <h1>Decision Maker</h1>
-        <p>Assign weight to your choices</p>
       </header>
 
       <div className="input-section">
