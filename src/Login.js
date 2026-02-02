@@ -11,14 +11,17 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     const endpoint = isRegistering ? '/register' : '/login';
 
+const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
+
     
     
     try {
       // Replace with your actual Render backend URL
-      const res = await axios.post(`http://127.0.0.1:5000${endpoint}`, {
-        username,
-        password
-      });
+      const res = await axios.post(`${API_BASE}/register`, { 
+  username, 
+  password 
+});
+      
 
       if (!isRegistering && res.data.access_token) {
         // Save the "Key" to the browser
