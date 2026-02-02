@@ -13,7 +13,7 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     
     // Ensure this matches your actual Render URL
-    const API_BASE = "https://task-picker-api.onrender.com"; 
+    const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
     const endpoint = isRegistering ? '/register' : '/login';
     
     try {
