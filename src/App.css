@@ -33,7 +33,7 @@ body {
   box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
-header h1 { margin: 0; font-size: 1.5rem; color: white; font-family: "Determination"}
+header h1 { margin-bottom: 20px; font-size: 1.5rem; color: white; font-family: "Determination"}
 header p { color: #64748b; margin-top: 5px; margin-bottom: 25px; }
 
 .input-section {
