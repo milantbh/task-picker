@@ -185,13 +185,18 @@ input[type="range"] { width: 100%; cursor: pointer; }
   text-align: center;
 }
 
-.login-container input {
-  display: block;
+.login-container input[type="text"],
+.login-container input[type="password"] {
   width: 100%;
+  padding: 12px;
   margin: 10px 0;
-  padding: 8px;
-  box-sizing: border-box; /* Crucial for padding! */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px; /* Prevents iOS zoom and keeps height consistent */
+  box-sizing: border-box; /* Crucial: includes padding in the width calculation */
+  font-family: inherit; /* Prevents the password dots from changing the field height */
 }
+
 .user-nav {
   position: absolute; /* Or 'fixed' if you want it to stay while scrolling */
   top: 20px;
