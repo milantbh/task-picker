@@ -7,31 +7,36 @@ const Login = ({ setToken }) => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000';
-
     
+    // Ensure this matches your actual Render URL
+    const API_BASE = "https://task-picker-api.onrender.com"; 
+    const endpoint = isRegistering ? '/register' : '/login';
     
     try {
-      // Replace with your actual Render backend URL
-      const res = await axios.post(`${API_BASE}/register`, { 
-  username, 
-  password
+      const res = await axios.post(`${API_BASE}${endpoint}`, { 
+        username, 
+        password
       });
 
+      // If we are logging in, we expect a token
       if (!isRegistering && res.data.access_token) {
-        // Save the "Key" to the browser
         localStorage.setItem('token', res.data.access_token);
         localStorage.setItem('username', res.data.username);
         setToken(res.data.access_token);
-      } else {
+      } else if (isRegistering) {
+        // If we just registered, switch to login mode
         setMessage("Registered successfully! Please login.");
         setIsRegistering(false);
+        setPassword('');
       }
     } catch (err) {
-      setMessage(err.response?.data?.msg || "Something went wrong");
+      // This helps you see the REAL error in the UI
+      console.error("Full Error:", err);
+      setMessage(err.response?.data?.msg || "Connection to server failed.");
     }
   };
 
