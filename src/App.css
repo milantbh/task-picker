@@ -225,3 +225,11 @@ input[type="range"] { width: 100%; cursor: pointer; }
 .logout-btn:hover {
   background: #ff6b81;
 }
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+  outline: none;                /* Remove the messy browser default */
+  border: 2px solid #007bff;    /* Apply a consistent blue border */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a soft blue glow */
+  background-color: #fff;       /* Ensure background stays white */
+}
